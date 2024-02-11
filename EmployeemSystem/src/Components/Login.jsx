@@ -25,6 +25,7 @@ const Login = () => {
           setError(result.data.Error);
         }
       })
+    
       .catch((err) => console.log(err));
     
 

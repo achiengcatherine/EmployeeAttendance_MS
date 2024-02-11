@@ -9,10 +9,10 @@ const con = mysql.createConnection({
 
 con.connect(function (err) {
     if (err) {
-        console.log("connection error")
+        console.log("connection error:", err);
     }
     else {
-        console.log("connected successfully")
+        console.log("connected successfully");
     }
 })
 export default con;
