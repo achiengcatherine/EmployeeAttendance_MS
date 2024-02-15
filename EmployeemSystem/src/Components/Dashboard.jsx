@@ -31,7 +31,7 @@ const Dashboard = () => {
               </li>
               <li className="w-100">
                 <Link
-                  to="/dashboard"
+                  to="/dashboard/employee"
                   className="nav-link text-white px-0 align-middle"
                 >
                   <i className="fs-4 bi-speedometer2 ms-2"></i>
@@ -42,7 +42,7 @@ const Dashboard = () => {
               </li>
               <li className="w-100">
                 <Link
-                  to="/dashboard/employee"
+                  to="/dashboard/category"
                   className="nav-link text-white px-0 align-middle"
                 >
                   <i className="fs-4 bi-columns ms-2"></i>
