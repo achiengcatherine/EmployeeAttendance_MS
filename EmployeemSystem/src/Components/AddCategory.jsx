@@ -1,15 +1,32 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const AddCategory = () => {
-    const [category, setCategory] = useState()
-    return (
-      
-    <div className="d-flex justify-content-center align-items-center vh-100">
+  const [category, setCategory] = useState();
+  const navigate = useNavigate();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:3000/auth/addCategory", { category })
+      .then((result) => {
+        if (result.data.Status) {
+          navigate("/dashboard/category");
+        } else {
+          alert(result.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+  return (
+    <div className="d-flex justify-content-center align-items-center vh-60">
       <div className="p-3 rounded w-25 border">
         <h2>Add Category</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="category">Categoty:</label>
+            <label htmlFor="category">
+              <strong>Category:</strong>
+            </label>
             <input
               type="text"
               name="category"
@@ -26,6 +43,6 @@ const AddCategory = () => {
       </div>
     </div>
   );
-}
+};
 
-export default AddCategory
+export default AddCategory;
