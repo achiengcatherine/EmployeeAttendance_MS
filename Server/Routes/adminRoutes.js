@@ -38,22 +38,27 @@ router.post("/addCategory", (req, res) => {
     return res.json({ Status: true });
   });
 });
+
 router.post("/addEmployee", (req, res) => {
   const sql =
-    "INSERT INTO employee (name, email, password, salary, address, image, category_id) VALUES (?)";
-  bcrypt.hash(req.body.password, 15, (err, hash) => {
-    if (err) return res.json({ Status: false, Error: "Query Error" });
+    "INSERT INTO employee (name, email, password, salary, address, category_id, image ) VALUES (?,?,?,?,?,?,?)";
+  bcrypt.hash(req.body.password, 10, (err, hash) => {
+    if (err) return res.json({ Status: false, Error: "Hashing Error" });
+
     const values = [
       req.body.name,
       req.body.email,
       hash,
-      req.body.address,
       req.body.salary,
-      req.body.image,
+      req.body.address,
       req.body.category_id,
+      req.body.image,
     ];
-    con.query(sql, [values], (err, result) => {
-      if (err) return res.json({ Status: false, Error: "Query Error" });
+    con.query(sql, values, (err, result) => {
+      if (err) {
+        console.error("Database Query Error:", err);
+        return res.json({ Status: false, Error: "Query Error" });
+      }
       return res.json({ Status: true });
     });
   });

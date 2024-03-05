@@ -34,7 +34,7 @@ const Category = () => {
           </thead>
           <tbody>
             {category.map((c) => (
-              <tr>
+              <tr key={c.id}>
                 <td>{c.name}</td>
               </tr>
             ))}

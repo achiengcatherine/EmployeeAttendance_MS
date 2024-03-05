@@ -27,12 +27,12 @@ const AddEmployee = () => {
   }, []);
 
   const handleSubmit = (e) => {
-    e.preventDefault(
+    e.preventDefault();
       axios
         .post("http://localhost:3000/auth/addEmployee", employee)
-        .then((result) => console.log(result.values))
+        .then((result) => console.log(result.data))
         .catch((err) => console.log(err))
-    );
+    
   };
   return (
     <div className="d-flex justify-content-center align-items-center mt-3">
@@ -40,12 +40,11 @@ const AddEmployee = () => {
         <h2 className="">Add Employee</h2>
         <form className="row g-1 " onSubmit={handleSubmit}>
           <div className="col-12 mt-2">
-            <label for="inputName" className="form-label">
+            <label htmlFor="inputName" className="form-label">
               Name
             </label>
             <input
               type="text"
-              name=""
               id="inputName"
               placeholder="Enter Name"
               className="form-control rounded-0"
@@ -54,13 +53,13 @@ const AddEmployee = () => {
               }
             />
           </div>
+
           <div className="col-12 mt-2">
-            <label for="inputEmail2" className="form-label">
+            <label htmlFor="inputEmail2" className="form-label">
               Email
             </label>
             <input
               type="text"
-              name=""
               id="inputEmail2"
               placeholder="Enter Email"
               className="form-control rounded-0"
@@ -70,12 +69,11 @@ const AddEmployee = () => {
             />
           </div>
           <div className="col-12 mt-2">
-            <label for="inputPassword2" className="form-label">
+            <label htmlFor="inputPassword2" className="form-label">
               Password
             </label>
             <input
               type="password"
-              name=""
               id="inputPassword2"
               placeholder="Enter password"
               className="form-control rounded-0"
@@ -84,13 +82,13 @@ const AddEmployee = () => {
               }
             />
           </div>
+
           <div className="col-12 mt-2">
-            <label for="inputSalary" className="form-label">
+            <label htmlFor="inputSalary" className="form-label">
               Salary
             </label>
             <input
               type="text"
-              name=""
               id="inputSalary"
               placeholder="Enter Salary"
               className="form-control rounded-0"
@@ -99,13 +97,13 @@ const AddEmployee = () => {
               }
             />
           </div>
+
           <div className="col-12 mt-2">
-            <label for="inputAddress" className="form-label">
+            <label htmlFor="inputAddress" className="form-label">
               Address
             </label>
             <input
               type="text"
-              name=""
               id="inputAddress"
               placeholder="4545 Main St"
               className="form-control rounded-0"
@@ -114,25 +112,35 @@ const AddEmployee = () => {
               }
             />
           </div>
+
           <div className="col-12 mt-2">
-            <label for="category" className="form-label">
+            <label htmlFor="category" className="form-label">
               Category
             </label>
-            <select name="category" id="category" className="form-select">
-              onChange=
-              {(e) => setEmployee({ ...employee, category_id: e.target.value })}
+            <select
+              name="category"
+              id="category"
+              className="form-select"
+              onChange={(e) =>
+                setEmployee({ ...employee, category_id: e.target.value })
+              }
+            >
               {category.map((c) => {
-                return <option value={c.id}>{c.name}</option>;
+                return (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                );
               })}
             </select>
           </div>
+
           <div className="col-12 mt-2">
-            <label for="inputGroupFile01" className="form-label">
+            <label htmlFor="inputGroupFile01" className="form-label">
               Select Image
             </label>
             <input
               type="file"
-              name=""
               id="inputGroupFile01"
               className="form-control rounded-0"
               onChange={(e) =>
