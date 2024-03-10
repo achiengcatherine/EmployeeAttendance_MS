@@ -40,7 +40,7 @@ const AddEmployee = () => {
     formData.append("image", employee.image);
 
     axios
-      .post("http://localhost:3000/auth/addEmployee", formData)
+      .post("http://localhost:3000/auth/addEmployee", formData )
       .then((result) => console.log(result.data))
       .catch((err) => console.log(err));
   };
@@ -159,7 +159,7 @@ const AddEmployee = () => {
               name="image"
               className="form-control rounded-0"
               onChange={(e) =>
-                setEmployee({ ...employee, image: e.target.value })
+                setEmployee({ ...employee, image: e.target.files[0] })
               }
             />
           </div>

@@ -11,6 +11,7 @@ import Employee from "./Components/Employee";
 import AddCategory from './Components/AddCategory';
 import AddEmployee from './Components/AddEmployee';
 import EditEmployee from './Components/EditEmployee';
+import Register from './Components/Register';
 
 function App() {
  
@@ -18,6 +19,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/adminlogin" element={<Login />}></Route>
+        <Route path="/adminregister" element={<Register />}></Route>
         <Route path="/dashboard" element={<Dashboard />}></Route>
         <Route path="/" element={<Home />}></Route>
         <Route path="/dashboard/employee" element={<Employee />}></Route>
@@ -25,7 +27,10 @@ function App() {
         <Route path="/dashboard/profile" element={<Profile />}></Route>
         <Route path="/dashboard/addCategory" element={<AddCategory />}></Route>
         <Route path="/dashboard/addEmployee" element={<AddEmployee />}></Route>
-        <Route path="/dashboard/editEmployee/:id" element={<EditEmployee />}></Route>
+        <Route
+          path="/dashboard/editEmployee/:id"
+          element={<EditEmployee />}
+        ></Route>
       </Routes>
     </BrowserRouter>
   );
