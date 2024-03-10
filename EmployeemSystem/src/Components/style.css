@@ -1,6 +1,14 @@
-.LoginPage{}
+.LoginPage{
+    background-position: center;
+    background-repeat: no-repeat;
+}
 
 .loginForm{
     background-color: rgb(207, 195, 219);
     color: white;
+}
+.empImage{
+width: 40px;
+height: 40px;
+border-radius: 50%;
 }

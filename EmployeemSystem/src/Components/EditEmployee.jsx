@@ -1,58 +1,57 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-const AddEmployee = () => {
+const EditEmployee = () => {
+  const { id } = useParams();
   const [employee, setEmployee] = useState({
     name: "",
     email: "",
-    password: "",
     salary: "",
     address: "",
     category_id: "",
-    image: "",
   });
+
   const [category, setCategory] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     axios
       .get("http://localhost:3000/auth/category")
       .then((result) => {
         if (result.data.Status) {
-          navigate("/dashboard/employee");
+          setCategory(result.data.Result);
         } else {
           alert(result.data.Error);
         }
+      })
+      .catch((err) => console.log(err));
+
+    axios
+      .get("http://localhost:3000/auth/employee/" + id)
+      .then((result) => {
+        setEmployee({
+          ...employee,
+          name: result.data.Result[0].name,
+          email: result.data.Result[0].email,
+          address: result.data.Result[0].address,
+          salary: result.data.Result[0].salary,
+        });
       })
       .catch((err) => console.log(err));
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", employee.name);
-    formData.append("email", employee.email);
-    formData.append("password", employee.password);
-    formData.append("salary", employee.salary);
-    formData.append("address", employee.address);
-    formData.append("category_id", employee.category_id);
-    formData.append("image", employee.image);
-
     axios
-      .post("http://localhost:3000/auth/addEmployee", formData)
+      .put("http://localhost:3000/auth/editEmployee/" +id, employee)
       .then((result) => console.log(result.data))
       .catch((err) => console.log(err));
   };
   return (
     <div className="d-flex justify-content-center align-items-center mt-3">
       <div className="p-3 rounded w-50 border">
-        <h2 className="">Add Employee</h2>
-        <form
-          className="row g-1 "
-          onSubmit={handleSubmit}
-         
-        >
+        <h2 className="">Edit Employee</h2>
+        <form className="row g-1 " onSubmit={handleSubmit}>
           <div className="col-12 mt-2">
             <label htmlFor="inputName" className="form-label">
               Name
@@ -61,6 +60,7 @@ const AddEmployee = () => {
               type="text"
               id="inputName"
               placeholder="Enter Name"
+              value={employee.name}
               className="form-control rounded-0"
               onChange={(e) =>
                 setEmployee({ ...employee, name: e.target.value })
@@ -76,23 +76,10 @@ const AddEmployee = () => {
               type="text"
               id="inputEmail2"
               placeholder="Enter Email"
+              value={employee.email}
               className="form-control rounded-0"
               onChange={(e) =>
                 setEmployee({ ...employee, email: e.target.value })
-              }
-            />
-          </div>
-          <div className="col-12 mt-2">
-            <label htmlFor="inputPassword2" className="form-label">
-              Password
-            </label>
-            <input
-              type="password"
-              id="inputPassword2"
-              placeholder="Enter password"
-              className="form-control rounded-0"
-              onChange={(e) =>
-                setEmployee({ ...employee, password: e.target.value })
               }
             />
           </div>
@@ -105,6 +92,7 @@ const AddEmployee = () => {
               type="text"
               id="inputSalary"
               placeholder="Enter Salary"
+              value={employee.salary}
               className="form-control rounded-0"
               onChange={(e) =>
                 setEmployee({ ...employee, salary: e.target.value })
@@ -120,6 +108,7 @@ const AddEmployee = () => {
               type="text"
               id="inputAddress"
               placeholder="4545 Main St"
+              value={employee.address}
               className="form-control rounded-0"
               onChange={(e) =>
                 setEmployee({ ...employee, address: e.target.value })
@@ -149,24 +138,9 @@ const AddEmployee = () => {
             </select>
           </div>
 
-          <div className="col-12 mt-2">
-            <label htmlFor="inputGroupFile01" className="form-label">
-              Select Image
-            </label>
-            <input
-              type="file"
-              id="inputGroupFile01"
-              name="image"
-              className="form-control rounded-0"
-              onChange={(e) =>
-                setEmployee({ ...employee, image: e.target.value })
-              }
-            />
-          </div>
-
           <div className="col-12">
             <button type="submit" className="btn btn-success w-100 mt-3 ">
-              Add Employee
+              Edit Employee
             </button>
           </div>
         </form>
@@ -174,5 +148,4 @@ const AddEmployee = () => {
     </div>
   );
 };
-
-export default AddEmployee;
+export default EditEmployee;

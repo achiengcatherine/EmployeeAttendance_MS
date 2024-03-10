@@ -10,6 +10,8 @@ import Home from './Components/Home';
 import Employee from "./Components/Employee";
 import AddCategory from './Components/AddCategory';
 import AddEmployee from './Components/AddEmployee';
+import EditEmployee from './Components/EditEmployee';
+
 function App() {
  
   return (
@@ -23,6 +25,7 @@ function App() {
         <Route path="/dashboard/profile" element={<Profile />}></Route>
         <Route path="/dashboard/addCategory" element={<AddCategory />}></Route>
         <Route path="/dashboard/addEmployee" element={<AddEmployee />}></Route>
+        <Route path="/dashboard/editEmployee/:id" element={<EditEmployee />}></Route>
       </Routes>
     </BrowserRouter>
   );
