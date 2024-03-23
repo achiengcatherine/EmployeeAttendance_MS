@@ -1,20 +1,19 @@
-
-import './App.css' 
-import 'bootstrap/dist/css/bootstrap.min.css'
-import Login from './Components/Login'
-import {BrowserRouter, Routes, Route} from 'react-router-dom'             
-import Dashboard from './Components/Dashboard';
-import Profile from './Components/Profile';
-import Category from './Components/Category';
-import Home from './Components/Home';
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Login from "./Components/Login";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Dashboard from "./Components/Dashboard";
+import Profile from "./Components/Profile";
+import Category from "./Components/Category";
+import Home from "./Components/Home";
 import Employee from "./Components/Employee";
-import AddCategory from './Components/AddCategory';
-import AddEmployee from './Components/AddEmployee';
-import EditEmployee from './Components/EditEmployee';
-import Register from './Components/Register';
+import AddCategory from "./Components/AddCategory";
+import AddEmployee from "./Components/AddEmployee";
+import EditEmployee from "./Components/EditEmployee";
+import Register from "./Components/Register";
+import Attendance from "./Components/Attendance";
 
 function App() {
- 
   return (
     <BrowserRouter>
       <Routes>
@@ -31,10 +30,14 @@ function App() {
           path="/dashboard/editEmployee/:id"
           element={<EditEmployee />}
         ></Route>
+
+        <Route
+          path="/dashboard/markAttendance/:id"
+          element={<Attendance />}
+        ></Route>
       </Routes>
     </BrowserRouter>
   );
- 
 }
 
-export default App
+export default App;

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 
+
 const Employee = () => {
 
   const [employee, setEmployee] = useState([]);
@@ -21,6 +22,9 @@ const Employee = () => {
       .catch((err) => console.log(err));
   }, []);
 
+ 
+
+
   const handleDelete = (id) => {
     axios.delete("http://localhost:3000/auth/deleteEmployee/" + id)
     .then(result => {
@@ -36,6 +40,7 @@ const Employee = () => {
       <div className="d-flex justify-content-center">
         <h3>List of Employees</h3>
       </div>
+
       <Link to="/dashboard/addEmployee" className="btn btn-success">
         Add Employee
       </Link>
@@ -66,8 +71,24 @@ const Employee = () => {
                 <td>{e.address}</td>
                 <td>{e.salary}</td>
                 <td>
-                  <Link to={"/dashboard/editEmployee/"+ e.id} className="btn btn-info btn-sm me-3">Edit</Link>
-                  <button className="btn btn-warning btn-sm me-3" onClick={()=> handleDelete(e.id)}>Delete</button>
+                  <Link
+                    to={"/dashboard/markAttendance/" + e.id}
+                    className="btn btn-info btn-sm me-3"
+                  >
+                    markAttendance
+                  </Link>
+                  <Link
+                    to={"/dashboard/editEmployee/" + e.id}
+                    className="btn btn-info btn-sm me-3"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    className="btn btn-warning btn-sm me-3"
+                    onClick={() => handleDelete(e.id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}

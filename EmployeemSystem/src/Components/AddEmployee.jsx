@@ -20,7 +20,7 @@ const AddEmployee = () => {
       .get("http://localhost:3000/auth/category")
       .then((result) => {
         if (result.data.Status) {
-          navigate("/dashboard/employee");
+          setCategory(result.data.Result);
         } else {
           alert(result.data.Error);
         }
@@ -40,19 +40,21 @@ const AddEmployee = () => {
     formData.append("image", employee.image);
 
     axios
-      .post("http://localhost:3000/auth/addEmployee", formData )
-      .then((result) => console.log(result.data))
+      .post("http://localhost:3000/auth/addEmployee", formData)
+      .then((result => {
+        if (result.data.Status) {
+          navigate("/dashboard/employee")
+        } else {
+          alert(result.data.Error)
+        }
+      }))
       .catch((err) => console.log(err));
   };
   return (
     <div className="d-flex justify-content-center align-items-center mt-3">
       <div className="p-3 rounded w-50 border">
         <h2 className="">Add Employee</h2>
-        <form
-          className="row g-1 "
-          onSubmit={handleSubmit}
-         
-        >
+        <form className="row g-1 " onSubmit={handleSubmit}>
           <div className="col-12 mt-2">
             <label htmlFor="inputName" className="form-label">
               Name

@@ -7,21 +7,6 @@ const app = express();
 
 // Enable cors at the server side.
 
-/** Define the origin that you want to allow
-const allowedOrigins = ['http://localhost:5173'];
-
-// Enable CORS middleware with specific origin
-app.use(cors({
-  origin: function (origin, callback) {
-    // Check if the origin is allowed
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-}));
-*/
 app.use(
   cors({
     allowedHeaders: ["Content-Type"],

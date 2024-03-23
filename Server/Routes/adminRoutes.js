@@ -26,19 +26,27 @@ router.post("/adminlogin", (req, res) => {
   });
 });
 
-
 router.post("/adminregister", (req, res) => {
   const sql =
     "INSERT INTO register (name, email, password, confirm_password) VALUES (?, ?, ?, ?)";
-  con.query(sql, [req.body.name, req.body.email, req.body.password, req.body.confirm_password], (err, result) => {
-    if (err) return res.json({
-      registerStatus: false,
-      Error: "Query failed:" + err.message,
-    });
-    return res.json({ registerStatus: true, Result: result });
-  });
+  con.query(
+    sql,
+    [
+      req.body.name,
+      req.body.email,
+      req.body.password,
+      req.body.confirm_password,
+    ],
+    (err, result) => {
+      if (err)
+        return res.json({
+          registerStatus: false,
+          Error: "Query failed:" + err.message,
+        });
+      return res.json({ registerStatus: true, Result: result });
+    }
+  );
 });
-
 
 router.get("/category", (req, res) => {
   const sql = "SELECT * FROM category";
@@ -83,6 +91,8 @@ router.post("/addEmployee", upload.single("image"), (req, res) => {
   bcrypt.hash(req.body.password, 10, (err, hash) => {
     if (err) return res.json({ Status: false, Error: "Hashing Error" });
 
+    const filename = req.file.filename;
+
     const values = [
       req.body.name,
       req.body.email,
@@ -91,11 +101,12 @@ router.post("/addEmployee", upload.single("image"), (req, res) => {
       req.body.address,
       req.body.category_id,
       req.file.filename,
+      filename,
     ];
     con.query(sql, values, (err, result) => {
       if (err) {
         console.error("Database Query Error:", err);
-        return res.json({ Status: false, Error: "Query Error" });
+        return res.json({ Status: false, Error: "Query Error" + err });
       }
       return res.json({ Status: true });
     });
@@ -120,8 +131,9 @@ router.get("/employee/:id", (req, res) => {
 });
 
 router.put("/editEmployee/:id", (req, res) => {
-  const id = req.params.id; 
-  const sql = "UPDATE employee set name= ?, email= ?, salary= ?, address= ?, category_id= ? WHERE id= ? ";
+  const id = req.params.id;
+  const sql =
+    "UPDATE employee set name= ?, email= ?, salary= ?, address= ?, category_id= ? WHERE id= ? ";
 
   const values = [
     req.body.name,
@@ -131,17 +143,42 @@ router.put("/editEmployee/:id", (req, res) => {
     req.body.category_id,
   ];
   con.query(sql, [...values, id], (err, result) => {
-    if (err) return res.json({ Status: false, Error: "Query Error"+err });
+    if (err) return res.json({ Status: false, Error: "Query Error" + err });
     return res.json({ Status: true, Result: result });
   });
 });
 
-router.delete('/deleteEmployee/:id', (req, res) => {
+router.delete("/deleteEmployee/:id", (req, res) => {
   const id = req.params.id;
-  const sql = "delete from employee where id = ?"
+  const sql = "delete from employee where id = ?";
   con.query(sql, [id], (err, result) => {
-     if (err) return res.json({ Status: false, Error: "Query Error" + err });
-     return res.json({ Status: true, Result: result });
-   });
-})
+    if (err) return res.json({ Status: false, Error: "Query Error" + err });
+    return res.json({ Status: true, Result: result });
+  });
+});
+
+router.post("/markAttendance/:id", (req, res) => {
+  const id = req.params.id;
+  const { employee, attendanceStatus } = req.body;
+
+  const attendanceDateTime = new Date()
+    .toISOString()
+    .slice(0, 19)
+    .replace("T", " "); // Current date and time
+  const sql =
+    "INSERT INTO attendance (employee_id, attendance_status, attendance_datetime) VALUES (?, ?, ?)";
+  const values = [id, attendanceStatus, attendanceDateTime];
+
+  con.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error storing attendance:", err);
+      res
+        .status(500)
+        .json({ Status: false, Error: "Error storing attendance" });
+      return;
+    }
+    console.log("Attendance record stored successfully");
+    res.json({ Status: true, Message: "Attendance recorded successfully" });
+  });
+});
 export { router as adminRouter };
