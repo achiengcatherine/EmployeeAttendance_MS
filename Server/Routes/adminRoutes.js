@@ -1,6 +1,7 @@
 import express from "express";
 import con from "../database/db.js";
 import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
 import bcrypt from "bcrypt";
 import multer from "multer";
 import path from "path";
@@ -21,7 +22,7 @@ router.post("/adminlogin", (req, res) => {
       res.cookie("token", token);
       return res.json({ loginStatus: true });
     } else {
-      return res.json({ loginStatus: false, Error: "Wrong email or password" });
+      return res.json({ loginStatus: false, Error: "No Record Existed" });
     }
   });
 });
@@ -91,7 +92,7 @@ router.post("/addEmployee", upload.single("image"), (req, res) => {
   bcrypt.hash(req.body.password, 10, (err, hash) => {
     if (err) return res.json({ Status: false, Error: "Hashing Error" });
 
-    const filename = req.file.filename;
+    
 
     const values = [
       req.body.name,
@@ -101,7 +102,7 @@ router.post("/addEmployee", upload.single("image"), (req, res) => {
       req.body.address,
       req.body.category_id,
       req.file.filename,
-      filename,
+    
     ];
     con.query(sql, values, (err, result) => {
       if (err) {
@@ -181,4 +182,8 @@ router.post("/markAttendance/:id", (req, res) => {
     res.json({ Status: true, Message: "Attendance recorded successfully" });
   });
 });
+router.get('/logout', (req, res) => {
+  res.clearCookie('token');
+  return res.json({ Status: true });
+})
 export { router as adminRouter };
