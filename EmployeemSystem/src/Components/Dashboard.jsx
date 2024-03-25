@@ -1,9 +1,7 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.json";
 import axios from "axios";
-
-
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -20,7 +18,7 @@ const Dashboard = () => {
       .catch((error) => {
         console.error("Logout failed:", error);
       });
-  }
+  };
   return (
     <div className="container-fluid">
       <div className="row flex-nowrap">
@@ -30,15 +28,14 @@ const Dashboard = () => {
               to="/dashboard"
               className="d-flex align-items-center pb-3 mb-md-1 mt-md-3 me-md-auto text-white text-decoration-none"
             >
-              <span className="fs-5 fw-bolder d-none d-sm-inline">
-                E.A.S
-              </span>
+              <span className="fs-5 fw-bolder d-none d-sm-inline">E.A.S</span>
             </Link>
+
             <ul
               className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
               id="menu"
             >
-              <li className="w-100">
+              <li className="w-100 ">
                 <Link
                   to="/dashboard"
                   className="nav-link text-white px-0 align-middle"
@@ -47,7 +44,7 @@ const Dashboard = () => {
                   <span className="ms-2 d-none d-sm-inline">Dashboard</span>
                 </Link>
               </li>
-              <li className="w-100">
+              <li className="w-100 ">
                 <Link
                   to="/dashboard/employee"
                   className="nav-link text-white px-0 align-middle"
@@ -67,7 +64,7 @@ const Dashboard = () => {
                   <span className="ms-2 d-none d-sm-inline">Department</span>
                 </Link>
               </li>
-              <li className="w-100">
+              <li className="w-100 ">
                 <Link
                   to="/dashboard/profile"
                   className="nav-link text-white px-0 align-middle"
@@ -76,11 +73,8 @@ const Dashboard = () => {
                   <span className="ms-2 d-none d-sm-inline">Profile</span>
                 </Link>
               </li>
-              <li className="w-100" onClick={handleLogout}>
-                <Link
-                  
-                  className="nav-link text-white px-0 align-middle"
-                >
+              <li className="w-100 " onClick={handleLogout}>
+                <Link className="nav-link text-white px-0 align-middle">
                   <i className="fs-4 bi-power ms-2"></i>
                   <span className="ms-2 d-none d-sm-inline">Log Out</span>
                 </Link>
@@ -92,6 +86,7 @@ const Dashboard = () => {
           <div className="p-2 d-flex justify-content-center shadow">
             <h4>Employee Management System</h4>
           </div>
+          <Outlet />
         </div>
       </div>
     </div>

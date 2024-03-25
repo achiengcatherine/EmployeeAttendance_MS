@@ -182,6 +182,15 @@ router.post("/markAttendance/:id", (req, res) => {
     res.json({ Status: true, Message: "Attendance recorded successfully" });
   });
 });
+router.get('/adminRecords', (req, res) => {
+  const sql = "SELECT * FROM admin"
+   con.query(sql, (err, result) => {
+    if (err) return res.json({ Status: false, Error: "Query Error" + err });
+    return res.json({ Status: true, Result: result });
+  });
+});
+
+
 router.get('/logout', (req, res) => {
   res.clearCookie('token');
   return res.json({ Status: true });
