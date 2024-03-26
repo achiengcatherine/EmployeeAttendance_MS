@@ -20,10 +20,10 @@ const Register = () => {
       return;
     }
     axios
-      .post("http://localhost:3000/auth/adminregister", values)
+      .post("http://localhost:3000/auth/register", values)
       .then((result) => {
         if (result.data.registerStatus) {
-          navigate("/adminlogin");
+          navigate("/userLogin");
         } else {
           setError(result.data.Error);
         }
@@ -99,7 +99,7 @@ const Register = () => {
           </button>
           <div>
             <h5 className="signup">
-              Already have an account<Link to="/adminlogin">Login now</Link>
+              Already have an account<Link to="/userLogin">Login now</Link>
             </h5>
           </div>
         </form>

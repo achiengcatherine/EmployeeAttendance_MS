@@ -1,7 +1,9 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Login from "./Components/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./Components/Login";
+import Register from "./Components/Register";
+import UserLogin from "./Components/UserLogin";
 import Dashboard from "./Components/Dashboard";
 import Profile from "./Components/Profile";
 import Category from "./Components/Category";
@@ -10,7 +12,6 @@ import Employee from "./Components/Employee";
 import AddCategory from "./Components/AddCategory";
 import AddEmployee from "./Components/AddEmployee";
 import EditEmployee from "./Components/EditEmployee";
-import Register from "./Components/Register";
 import Attendance from "./Components/Attendance";
 
 function App() {
@@ -18,7 +19,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/adminlogin" element={<Login />}></Route>
-        <Route path="/adminregister" element={<Register />}></Route>
+        <Route path="/register" element={<Register />}></Route>
+        <Route path="/userLogin" element={<UserLogin/>}></Route>
         <Route path="/dashboard" element={<Dashboard />}>
           <Route path="" element={<Home />}></Route>
           <Route path="/dashboard/employee" element={<Employee />}></Route>

@@ -17,7 +17,7 @@ router.post("/adminlogin", (req, res) => {
       const token = jwt.sign(
         { role: "admin", email: email },
         "dolyne_katrinah23",
-        { expiresIn: "5d" }
+        { expiresIn: "1d" }
       );
       res.cookie("token", token);
       return res.json({ loginStatus: true });
@@ -27,26 +27,63 @@ router.post("/adminlogin", (req, res) => {
   });
 });
 
-router.post("/adminregister", (req, res) => {
+router.post("/register", (req, res) => {
   const sql =
     "INSERT INTO register (name, email, password, confirm_password) VALUES (?, ?, ?, ?)";
-  con.query(
-    sql,
-    [
-      req.body.name,
-      req.body.email,
-      req.body.password,
-      req.body.confirm_password,
-    ],
-    (err, result) => {
-      if (err)
-        return res.json({
-          registerStatus: false,
-          Error: "Query failed:" + err.message,
-        });
-      return res.json({ registerStatus: true, Result: result });
+
+  bcrypt.hash(req.body.password, 10, (err, hash) => {
+    if (err) return res.json({ Status: false, Error: "Hashing Error" });
+
+    con.query(
+      sql,
+      [req.body.name, req.body.email, hash, req.body.confirm_password],
+      (err, result) => {
+        if (err)
+          return res.json({
+            registerStatus: false,
+            Error: "Query failed:" + err.message,
+          });
+        return res.json({ registerStatus: true, Result: result });
+      }
+    );
+  });
+});
+
+router.post("/userLogin", (req, res) => {
+  const { email, password } = req.body;
+
+  const sql = "SELECT * FROM register WHERE email = ?";
+  con.query(sql, [email], async (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res
+        .status(500)
+        .json({ loginStatus: false, Error: "Database error" });
     }
-  );
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ loginStatus: false, Error: "No Record Existed" });
+    }
+
+    // Compare hashed password
+    const match = await bcrypt.compare(password, result[0].password);
+    if (!match) {
+      return res
+        .status(401)
+        .json({ loginStatus: false, Error: "Invalid email or password" });
+    }
+
+    const email = result[0].email;
+    const token = jwt.sign(
+      { role: "employee", email: email },
+      "dolyne_katrinah23",
+      { expiresIn: "5d" }
+    );
+    res.cookie("token", token);
+    return res.status(200).json({ loginStatus: true });
+  });
 });
 
 router.get("/category", (req, res) => {
@@ -92,8 +129,6 @@ router.post("/addEmployee", upload.single("image"), (req, res) => {
   bcrypt.hash(req.body.password, 10, (err, hash) => {
     if (err) return res.json({ Status: false, Error: "Hashing Error" });
 
-    
-
     const values = [
       req.body.name,
       req.body.email,
@@ -102,7 +137,6 @@ router.post("/addEmployee", upload.single("image"), (req, res) => {
       req.body.address,
       req.body.category_id,
       req.file.filename,
-    
     ];
     con.query(sql, values, (err, result) => {
       if (err) {
@@ -182,17 +216,16 @@ router.post("/markAttendance/:id", (req, res) => {
     res.json({ Status: true, Message: "Attendance recorded successfully" });
   });
 });
-router.get('/adminRecords', (req, res) => {
-  const sql = "SELECT * FROM admin"
-   con.query(sql, (err, result) => {
+router.get("/adminRecords", (req, res) => {
+  const sql = "SELECT * FROM admin";
+  con.query(sql, (err, result) => {
     if (err) return res.json({ Status: false, Error: "Query Error" + err });
     return res.json({ Status: true, Result: result });
   });
 });
 
-
-router.get('/logout', (req, res) => {
-  res.clearCookie('token');
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
   return res.json({ Status: true });
-})
+});
 export { router as adminRouter };
