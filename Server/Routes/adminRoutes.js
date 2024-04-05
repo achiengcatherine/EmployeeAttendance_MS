@@ -120,8 +120,11 @@ const upload = multer({
 //end of image upload
 
 router.post("/addEmployee", upload.single("image"), (req, res) => {
+  /*if (req.user.role !== "admin") {
+    return res.status(403).json({ Error: "Unauthorized access" });
+  }*/
   if (!req.file) {
-    return res.status(400).json({ error: "No file uploaded" });
+    return res.status(400).json({ Error: "No file uploaded" });
   }
 
   const sql =
@@ -216,6 +219,8 @@ router.post("/markAttendance/:id", (req, res) => {
     res.json({ Status: true, Message: "Attendance recorded successfully" });
   });
 });
+
+
 router.get("/adminRecords", (req, res) => {
   const sql = "SELECT * FROM admin";
   con.query(sql, (err, result) => {
@@ -224,8 +229,39 @@ router.get("/adminRecords", (req, res) => {
   });
 });
 
+
+// Endpoint to get attendance records
+
+router.get("/attendance", (req, res) => {
+  const sql = "SELECT * FROM attendance";
+  con.query(sql, (err, result) => {
+    if (err) {
+      console.error("Error fetching attendance records:", err);
+      res.status(500).json({ Status: false, Error: "Error fetching attendance records" });
+      return;
+    }
+    res.json({ Status: true, Result: result });
+  });
+});
+
+/*router.get("/attendanceRecord", (req, res) => {
+  const employee_id = req.params.id;
+  const sql = "SELECT * FROM attendance WHERE employee_id = ?";
+  con.query(sql, [employee_id], (err, result) => {
+    if (err) {
+      console.error("Error fetching attendance records:", err);
+      res.status(500).json({ Error: "Error fetching attendance records" });
+      return;
+    }
+    res.json({ Status: true, Result: result });
+  });
+  });*/
+
+
 router.get("/logout", (req, res) => {
   res.clearCookie("token");
   return res.json({ Status: true });
 });
+
+
 export { router as adminRouter };

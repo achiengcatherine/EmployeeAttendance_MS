@@ -2,12 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-
-
 const Employee = () => {
-
   const [employee, setEmployee] = useState([]);
-  
 
   useEffect(() => {
     axios
@@ -22,29 +18,27 @@ const Employee = () => {
       .catch((err) => console.log(err));
   }, []);
 
- 
-
-
   const handleDelete = (id) => {
-    axios.delete("http://localhost:3000/auth/deleteEmployee/" + id)
-    .then(result => {
-      if (result.data.Status) {
-        window.location.reload()
-      } else {
-        alert(result.data.Error)
-      }
-    })
-  }
+    axios
+      .delete("http://localhost:3000/auth/deleteEmployee/" + id)
+      .then((result) => {
+        if (result.data.Status) {
+          window.location.reload();
+        } else {
+          alert(result.data.Error);
+        }
+      });
+  };
   return (
     <div className=" px-3 mt-5">
       <div className="d-flex justify-content-center">
         <h3>List of Employees</h3>
       </div>
-
-      <Link to="/dashboard/addEmployee" className="btn btn-success">
-        Add Employee
-      </Link>
-
+      {req.user.role === "admin" && (
+        <Link to="/dashboard/addEmployee" className="btn btn-success">
+          Add Employee
+        </Link>
+      )}
       <div className="mt-3">
         <table className="table">
           <thead>

@@ -7,9 +7,9 @@ import { useNavigate, useParams } from "react-router-dom";
 const Attendance = () => {
   const { id } = useParams();
   const [employee, setEmployee] = useState({
-    Image:"",
     name: "",
     email: "",
+    
  
   });
   const [attendanceStatus, setAttendanceStatus] = useState("present");
@@ -36,14 +36,14 @@ const Attendance = () => {
       const currentTime = new Date().toLocaleString(); // Get current date and time
       setAttendanceDateTime(currentTime);
      axios
-       .post("http://localhost:3000/auth/markAttendance/" + id, {
+       .post("http://localhost:3000/auth/markAttendance/"+id , {
          employee,
          attendanceStatus: attendanceStatus,
          attendanceDateTime: currentTime,
        })
        .then((result) => {
          if (result.data.Status) {
-           navigate("/dashboard");
+           navigate("/dashboard/record");
          } else {
            console.log(result.data.Error);
          }

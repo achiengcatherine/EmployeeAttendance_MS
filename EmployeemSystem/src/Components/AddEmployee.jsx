@@ -47,7 +47,7 @@ const AddEmployee = () => {
         } else {
           alert(result.data.Error)
         }
-      }))
+      }))    
       .catch((err) => console.log(err));
   };
   return (
